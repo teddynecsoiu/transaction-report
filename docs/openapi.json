@@ -1,0 +1,205 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "Prodsite Exercise",
+    "description" : "This is a sample Petstore server.  You can find\nout more about Swagger at\n[http://swagger.io](http://swagger.io) or on\n[irc.freenode.net, #swagger](http://swagger.io/irc/).\n",
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "/"
+  } ],
+  "paths" : {
+    "/transaction" : {
+      "post" : {
+        "tags" : [ "transaction" ],
+        "summary" : "Add a new transaction to the record",
+        "operationId" : "addTransaction",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/TransactionBody"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Transaction"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      }
+    },
+    "/transaction/{id}" : {
+      "delete" : {
+        "tags" : [ "transaction" ],
+        "summary" : "Deletes a transaction",
+        "operationId" : "deleteTransaction",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Pet id to delete",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Nothing to return"
+          },
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "Transaction not found"
+          }
+        }
+      }
+    },
+    "/account/{account_id}/breakdown" : {
+      "get" : {
+        "parameters" : [ {
+          "name" : "account_id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "format" : "uuid"
+          }
+        }, {
+          "name" : "start_date",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "date"
+          }
+        }, {
+          "name" : "end_date",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "date"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Breakdown"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "TransactionBody" : {
+        "type" : "object",
+        "properties" : {
+          "date" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "expense_type" : {
+            "type" : "string",
+            "enum" : [ "invoice", "salary", "services", "office-supplies", "travel" ]
+          },
+          "account_id" : {
+            "type" : "string",
+            "format" : "uuid"
+          },
+          "amount" : {
+            "type" : "number",
+            "format" : "float"
+          }
+        }
+      },
+      "Transaction" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "uuid"
+          },
+          "date" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "expense_type" : {
+            "type" : "string",
+            "enum" : [ "invoice", "salary", "services", "office-supplies", "travel" ]
+          },
+          "account_id" : {
+            "type" : "string",
+            "format" : "uuid"
+          },
+          "amount" : {
+            "type" : "number",
+            "format" : "float"
+          }
+        }
+      },
+      "Breakdown" : {
+        "type" : "object",
+        "properties" : {
+          "invoice" : {
+            "$ref" : "#/components/schemas/TransactionOverview"
+          },
+          "salary" : {
+            "$ref" : "#/components/schemas/TransactionOverview"
+          },
+          "services" : {
+            "$ref" : "#/components/schemas/TransactionOverview"
+          },
+          "office-supplies" : {
+            "$ref" : "#/components/schemas/TransactionOverview"
+          },
+          "travel" : {
+            "$ref" : "#/components/schemas/TransactionOverview"
+          }
+        }
+      },
+      "TransactionOverview" : {
+        "type" : "object",
+        "properties" : {
+          "sum" : {
+            "type" : "number",
+            "format" : "float"
+          },
+          "count" : {
+            "type" : "number",
+            "format" : "int32"
+          }
+        }
+      }
+    }
+  }
+}
