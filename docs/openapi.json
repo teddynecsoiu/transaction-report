@@ -1,12 +1,13 @@
 {
   "openapi" : "3.0.0",
   "info" : {
-    "title" : "Prodsite Exercise",
-    "description" : "This is a sample Petstore server.  You can find\nout more about Swagger at\n[http://swagger.io](http://swagger.io) or on\n[irc.freenode.net, #swagger](http://swagger.io/irc/).\n",
+    "title" : "Transaction API",
+    "description" : "A simple API to add, delete and get a breakdown of user transactions.\n",
     "version" : "1.0.0"
   },
   "servers" : [ {
-    "url" : "/"
+    "url" : "https://virtserver.swaggerhub.com/teddynecsoiu/transaction/1.0.0",
+    "description" : "SwaggerHub API Auto Mocking"
   } ],
   "paths" : {
     "/transaction" : {
@@ -73,6 +74,7 @@
     },
     "/account/{account_id}/breakdown" : {
       "get" : {
+        "tags" : [ "account" ],
         "parameters" : [ {
           "name" : "account_id",
           "in" : "path",
